@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "istanbul",
+    "transform-runtime",
+    "wildcard"
+  ],
+  "presets": [
+    "env"
+  ],
+  "sourceMaps": "inline"
+}

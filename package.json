@@ -1,0 +1,119 @@
+{
+  "name": "discord-dj",
+  "version": "1.0.0",
+  "description": "A music bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel lib -d dist",
+    "check": "ncu",
+    "coverage": "nyc report -r=html && open coverage/index.html",
+    "debug": "node --inspect bin/acclimate.js",
+    "lint": "standard -v | snazzy",
+    "pretest": "npm run lint --silent",
+    "repl": "babel-node",
+    "serve": "node dist/index.js",
+    "start": "nodemon lib/index.js --exec babel-node",
+    "test": "nyc ava && nyc report --reporter=text-lcov | coveralls",
+    "watch": "ava --watch --verbose"
+  },
+  "author": "Kelly Fox <kelly@bumfuddled.com>",
+  "keywords": [
+    "discord",
+    "api",
+    "bot",
+    "client",
+    "music",
+    "node",
+    "discordapp"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "babel-plugin-wildcard": "^2.1.2",
+    "babel-runtime": "^6.26.0",
+    "bufferutil": "^3.0.2",
+    "columnify": "^1.5.4",
+    "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "libsodium-wrappers": "^0.5.2",
+    "node-opus": "^0.2.6",
+    "request": "^2.81.0",
+    "sinon": "^3.2.1",
+    "sodium": "^2.0.1",
+    "uws": "^8.14.1",
+    "winston": "^2.3.1",
+    "youtube-dl": "^1.11.1"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "coveralls": "^2.13.1",
+    "eslint": "^4.5.0",
+    "eslint-plugin-ava": "^4.2.1",
+    "eslint-plugin-babel": "^4.1.2",
+    "nock": "^9.0.14",
+    "nodemon": "^1.11.0",
+    "nyc": "^11.1.0",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.3"
+  },
+  "optionalDependencies": {
+    "npm-check-updates": "^2.12.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "plugins": [
+      "ava",
+      "babel"
+    ],
+    "extends": "plugin:ava/recommended",
+    "rules": {
+      "strict": 0
+    }
+  },
+  "ava": {
+    "color": true,
+    "concurrency": 5,
+    "failFast": true,
+    "powerAssert": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "all": true,
+    "branches": 99,
+    "cache": true,
+    "check-coverage": false,
+    "exclude": [
+      "coverage",
+      "dist",
+      "lib/index.js",
+      "node_modules",
+      "test"
+    ],
+    "functions": 99,
+    "instrument": false,
+    "lines": 99,
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "statements": 99
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
+}
