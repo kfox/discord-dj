@@ -34,10 +34,9 @@ test.serial('exec', async t => {
   const helpCommandExec = sandbox.stub(HelpCommand, 'exec')
 
   await InvalidCommand.exec(args)
-  args.content = 'Invalid command.'
 
   t.true(
-    invalidCommandReply.calledWith(args),
+    invalidCommandReply.calledWithMatch({ content: 'Invalid command.' }),
     'calls message.reply with correct arguments'
   )
   t.true(

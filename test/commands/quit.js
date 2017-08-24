@@ -51,7 +51,7 @@ test.serial('exec', async t => {
     'logs an appropriate message'
   )
   t.true(
-    quitCommandReply.calledWith(args),
+    quitCommandReply.calledWithMatch({ content: 'Goodbye!' }),
     'calls message.reply with correct arguments'
   )
 })

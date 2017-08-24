@@ -38,10 +38,8 @@ test('exec', t => {
 
   PingCommand.exec(args)
 
-  args.content = 'pong'
-
   t.true(
-    pingCommandReply.calledWith(args),
+    pingCommandReply.calledWithMatch({ content: 'pong' }),
     'calls message.reply with correct arguments'
   )
 })

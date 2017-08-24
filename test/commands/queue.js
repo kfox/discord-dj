@@ -44,7 +44,7 @@ test('exec with no queue', t => {
   QueueCommand.exec(args)
 
   t.true(
-    queueCommandReply.calledWith(sinon.match({ content: 'No songs queued.' })),
+    queueCommandReply.calledWithMatch({ content: 'No songs queued.' }),
     'calls message.reply with correct arguments'
   )
 })

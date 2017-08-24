@@ -3,6 +3,8 @@ import test from 'ava'
 import { queue as q } from '../lib/queue'
 import { config } from '../lib/config'
 
+const data = ['a', 'b', 'c']
+
 test.beforeEach(t => {
   q.clear()
 })
@@ -15,7 +17,6 @@ test('max queue size', t => {
 })
 
 test('enqueue with an array argument', t => {
-  const data = ['a', 'b', 'c']
   const result = q.enqueue(data)
 
   t.deepEqual(
@@ -42,10 +43,10 @@ test('enqueue with a string argument', t => {
 })
 
 test('enqueue more than max queue size', t => {
-  const data = Array(q.maxQueueSize + 1).fill(0)
+  const tooMuchData = Array(q.maxQueueSize + 1).fill(0)
 
   const error = t.throws(() => {
-    q.enqueue(data)
+    q.enqueue(tooMuchData)
   }, RangeError)
 
   t.is(
@@ -56,7 +57,6 @@ test('enqueue more than max queue size', t => {
 })
 
 test('dequeue with no arguments', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
   const result = q.dequeue()
 
@@ -68,7 +68,6 @@ test('dequeue with no arguments', t => {
 })
 
 test('dequeue with an argument', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
   const result = q.dequeue(3)
 
@@ -80,7 +79,6 @@ test('dequeue with an argument', t => {
 })
 
 test('iteration', t => {
-  const data = ['a', 'b', 'c']
   let enqueued = []
 
   q.enqueue(data)
@@ -97,7 +95,6 @@ test('iteration', t => {
 })
 
 test('peek with no arguments', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
 
   t.deepEqual(
@@ -108,7 +105,6 @@ test('peek with no arguments', t => {
 })
 
 test('peek with start specified', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
 
   t.deepEqual(
@@ -119,7 +115,6 @@ test('peek with start specified', t => {
 })
 
 test('peek with start and end specified', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
 
   t.deepEqual(
@@ -130,7 +125,6 @@ test('peek with start and end specified', t => {
 })
 
 test('combined operations', t => {
-  const data = ['a', 'b', 'c']
   q.enqueue(data)
   q.dequeue(2)
   q.enqueue('whoa')
@@ -141,5 +135,3 @@ test('combined operations', t => {
     'are successful'
   )
 })
-
-test.todo('test queue iteration')
