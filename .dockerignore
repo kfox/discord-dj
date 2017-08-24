@@ -1,0 +1,9 @@
+.dockerignore
+.env
+.git*
+Dockerfile
+node_modules
+npm-debug.log
+tags
+tags.lock
+tags.temp
