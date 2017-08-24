@@ -33,10 +33,10 @@ test('init', t => {
   )
 })
 
-test.serial('exec', async t => {
+test('exec', t => {
   const pingCommandReply = sandbox.stub(PingCommand, 'reply')
 
-  await PingCommand.exec(args)
+  PingCommand.exec(args)
 
   args.content = 'pong'
 

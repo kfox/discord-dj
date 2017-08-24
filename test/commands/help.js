@@ -1,6 +1,5 @@
 import test from 'ava'
 import sinon from 'sinon'
-import columnify from 'columnify'
 import winston from 'winston'
 
 import HelpCommand from '../../lib/commands/help'
@@ -34,7 +33,7 @@ test('init', t => {
   )
 })
 
-test.serial('exec', t => {
+test('exec', t => {
   const helpCommandReply = sandbox.stub(HelpCommand, 'reply')
 
   HelpCommand.exec(args)
@@ -44,3 +43,5 @@ test.serial('exec', t => {
     'calls message.reply with correct arguments'
   )
 })
+
+test.todo('test help output')
