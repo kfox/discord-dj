@@ -8,5 +8,6 @@ export default {
   },
   content: config.get('prefix') + 'ping',
   guild: true,
+  reply: async (content, options) => {},
   system: false
 }
