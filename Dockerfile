@@ -64,4 +64,4 @@ RUN apk --quiet del .build-deps
 USER node
 COPY . ./
 
-CMD [ "pm2", "start", "pm2-config.json", "--no-daemon" ]
+CMD [ "pm2", "start", "./config/pm2-config.json", "--no-daemon" ]
