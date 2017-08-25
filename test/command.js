@@ -2,7 +2,7 @@ import test from 'ava'
 import sinon from 'sinon'
 import winston from 'winston'
 
-import { config } from '../lib/config'
+import config from '../lib/config'
 import * as command from '../lib/command.js'
 import InvalidCommand from '../lib/commands/invalid'
 import PingCommand from '../lib/commands/ping'

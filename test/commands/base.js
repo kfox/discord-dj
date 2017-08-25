@@ -2,7 +2,7 @@ import test from 'ava'
 import sinon from 'sinon'
 import winston from 'winston'
 
-import { BaseCommand } from '../../lib/commands/base'
+import BaseCommand from '../../lib/commands/base'
 
 import MessageFixture from '../fixtures/message'
 

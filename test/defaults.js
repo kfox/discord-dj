@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { defaults } from '../lib/defaults'
+import defaults from '../lib/defaults'
 
 const DEFAULTS = {
   logging: {

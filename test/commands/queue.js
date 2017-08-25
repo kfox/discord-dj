@@ -2,7 +2,7 @@ import test from 'ava'
 import sinon from 'sinon'
 import winston from 'winston'
 
-import { queue as q } from '../../lib/queue'
+import q from '../../lib/queue'
 import { formatDuration } from '../../lib/utils'
 import QueueCommand from '../../lib/commands/queue'
 
@@ -35,6 +35,11 @@ test('init', t => {
     QueueCommand.description,
     'shows the current song queue',
     'sets the description'
+  )
+  t.deepEqual(
+    QueueCommand.aliases,
+    ['q'],
+    'sets the aliases'
   )
 })
 

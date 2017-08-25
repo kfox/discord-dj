@@ -24,7 +24,8 @@ const columnOptions = {
     commandNameWithPrefix: {
       headingTransform: heading => { return 'COMMAND' }
     }
-  }
+  },
+  preserveNewLines: true
 }
 
 test.beforeEach(t => {
@@ -73,7 +74,9 @@ test('output', t => {
 
   t.true(
     helpCommandReply.calledWithMatch({
-      content: columnify(sortedCommandList, columnOptions)
+      content: '```\n' +
+        columnify(sortedCommandList, columnOptions) +
+        '```\n'
     }),
     'is properly formatted'
   )

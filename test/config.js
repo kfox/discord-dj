@@ -1,25 +1,33 @@
 import fs from 'fs'
-import { cwd } from 'process'
 import { resolve } from 'path'
 
 import test from 'ava'
 import sinon from 'sinon'
 
-import { config } from '../lib/config'
-import { defaults } from '../lib/defaults'
+import config from '../lib/config'
+import defaults from '../lib/defaults'
 
 const sandbox = sinon.sandbox.create()
 const configFileName = resolve(
-  cwd(), 'config', 'config.json'
+  process.cwd(), 'config', 'config.json'
 )
-const TOKEN = 'abcd1234'
 const BASE_CONFIG = defaults.config
 
 test.afterEach.always(t => {
   sandbox.restore()
 })
 
+const loadFakeConfig = () => {
+  sandbox.stub(fs, 'accessSync')
+  sandbox.stub(fs, 'readFileSync').callsFake((file, options) => {
+    return JSON.stringify(BASE_CONFIG)
+  })
+  config.load()
+}
+
 test('config.get with valid argument', t => {
+  loadFakeConfig()
+
   for (let [key, value] of Object.entries(BASE_CONFIG)) {
     t.deepEqual(
       config.get(key),
@@ -30,6 +38,8 @@ test('config.get with valid argument', t => {
 })
 
 test('config.get with invalid argument', t => {
+  loadFakeConfig()
+
   t.deepEqual(
     config.get('foobar'),
     null,
@@ -38,11 +48,13 @@ test('config.get with invalid argument', t => {
 })
 
 test('config.get with no arguments', t => {
+  loadFakeConfig()
+
   const response = config.get()
 
   t.deepEqual(
-    response.debug,
-    BASE_CONFIG.debug
+    response.prefix,
+    BASE_CONFIG.prefix
   )
 
   t.deepEqual(
@@ -53,7 +65,7 @@ test('config.get with no arguments', t => {
 
 test('config.set', t => {
   const save = sandbox.stub(config, 'save')
-  const load = sandbox.stub(config, 'load')
+  const TOKEN = 'abcd1234'
 
   config.set('token', TOKEN)
 
@@ -65,10 +77,6 @@ test('config.set', t => {
   t.true(
     save.called,
     'config.save was called for config change'
-  )
-  t.true(
-    load.notCalled,
-    'config.load was not called for config change'
   )
 })
 
@@ -98,19 +106,17 @@ test('config.load', t => {
 })
 
 test('config.load with config missing', t => {
-  const save = sandbox.stub(config, 'save')
   sandbox.stub(fs, 'accessSync').throws()
+  sandbox.stub(fs, 'readFileSync').callsFake((file, options) => {
+    return JSON.stringify({ meep: true })
+  })
 
   config.load()
 
-  t.true(
-    save.called,
-    'new config file written'
-  )
   t.deepEqual(
     config.get(),
     BASE_CONFIG,
-    'config is loaded correctly'
+    'default config is loaded'
   )
 })
 

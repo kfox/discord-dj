@@ -1,4 +1,4 @@
-import { BaseCommand } from '../../../lib/commands/base'
+import BaseCommand from '../../../lib/commands/base'
 
 class AnotherCommand extends BaseCommand {
   constructor () {

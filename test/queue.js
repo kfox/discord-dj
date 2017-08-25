@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import { queue as q } from '../lib/queue'
-import { config } from '../lib/config'
+import q from '../lib/queue'
+import config from '../lib/config'
 
 const data = ['a', 'b', 'c']
 
