@@ -8,7 +8,7 @@ import InvalidCommand from '../lib/commands/invalid'
 import PingCommand from '../lib/commands/ping'
 import PlayCommand from '../lib/commands/play'
 
-import * as CommandFixtures from './fixtures/commands'
+import CommandFixtures from './fixtures/commands'
 import MessageFixture from './fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })

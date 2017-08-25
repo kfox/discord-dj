@@ -7,7 +7,7 @@ import { formatDuration } from '../../lib/utils'
 import QueueCommand from '../../lib/commands/queue'
 
 import message from '../fixtures/message'
-import * as songs from '../fixtures/songs'
+import SongFixtures from '../fixtures/songs'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
@@ -52,7 +52,7 @@ test('exec with no queue', t => {
 test('exec with queue', t => {
   const queueCommandReply = sandbox.stub(QueueCommand, 'reply')
 
-  const songList = Object.values(songs).sort((a, b) => {
+  const songList = Object.values(SongFixtures).sort((a, b) => {
     return a.title.localeCompare(b.title)
   })
 

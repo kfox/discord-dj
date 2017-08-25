@@ -6,8 +6,8 @@ import columnify from 'columnify'
 import HelpCommand from '../../lib/commands/help'
 import * as command from '../../lib/command.js'
 
-import message from '../fixtures/message'
-import * as commands from '../fixtures/commands'
+import MessageFixture from '../fixtures/message'
+import CommandFixtures from '../fixtures/commands'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
@@ -30,7 +30,7 @@ const columnOptions = {
 test.beforeEach(t => {
   args = {
     logger: logger,
-    message: message
+    message: MessageFixture
   }
 })
 
@@ -64,8 +64,8 @@ test('exec', t => {
 test('output', t => {
   const helpCommandReply = sandbox.stub(HelpCommand, 'reply')
   const commandList = sandbox.stub(command, 'list')
-    .returns(Object.values(commands))
-  const sortedCommandList = Object.values(commands).sort((a, b) => {
+    .returns(Object.values(CommandFixtures))
+  const sortedCommandList = Object.values(CommandFixtures).sort((a, b) => {
     return a.commandName.localeCompare(b.commandName)
   })
 

@@ -3,7 +3,7 @@ import sinon from 'sinon'
 import winston from 'winston'
 
 import * as command from '../lib/command.js'
-import * as handlers from '../lib/handlers.js'
+import { errorHandler, exitHandler, messageHandler, readyHandler } from '../lib/handlers'
 
 import MessageFixture from './fixtures/message'
 
@@ -31,7 +31,7 @@ test.afterEach.always(t => {
 })
 
 test('errorHandler', t => {
-  handlers.errorHandler(logger, 'foo')
+  errorHandler(logger, 'foo')
 
   t.true(
     errorLogger.calledWith('foo'),
@@ -40,7 +40,7 @@ test('errorHandler', t => {
 })
 
 test('exitHandler with no options', t => {
-  handlers.exitHandler(logger)
+  exitHandler(logger)
 
   t.true(
     infoLogger.notCalled,
@@ -58,7 +58,7 @@ test('exitHandler with no options', t => {
 
 test('exitHandler with options.cleanup', t => {
   options.cleanup = true
-  handlers.exitHandler(logger, options)
+  exitHandler(logger, options)
 
   t.true(
     infoLogger.called,
@@ -76,7 +76,7 @@ test('exitHandler with options.cleanup', t => {
 
 test('exitHandler with options.exit', t => {
   options.exit = true
-  handlers.exitHandler(logger, options)
+  exitHandler(logger, options)
 
   t.true(
     infoLogger.notCalled,
@@ -94,7 +94,7 @@ test('exitHandler with options.exit', t => {
 
 test('exitHandler with error', t => {
   const err = new Error()
-  handlers.exitHandler(logger, options, err)
+  exitHandler(logger, options, err)
 
   t.true(
     errorLogger.calledWith(err.stack),
@@ -103,7 +103,7 @@ test('exitHandler with error', t => {
 })
 
 test('messageHandler', t => {
-  handlers.messageHandler(logger, message)
+  messageHandler(logger, message)
   t.true(
     commandExec.called,
     'commandExec was called'
@@ -112,7 +112,7 @@ test('messageHandler', t => {
 
 test('messageHandler with system message', t => {
   message.system = true
-  handlers.messageHandler(logger, message)
+  messageHandler(logger, message)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -121,7 +121,7 @@ test('messageHandler with system message', t => {
 
 test('messageHandler with bot message', t => {
   message.author.bot = true
-  handlers.messageHandler(logger, message)
+  messageHandler(logger, message)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -130,7 +130,7 @@ test('messageHandler with bot message', t => {
 
 test('messageHandler with non-guild message', t => {
   message.guild = false
-  handlers.messageHandler(logger, message)
+  messageHandler(logger, message)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -139,7 +139,7 @@ test('messageHandler with non-guild message', t => {
 
 test('messageHandler with non-command message', t => {
   message.content = '?ping'
-  handlers.messageHandler(logger, message)
+  messageHandler(logger, message)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -147,7 +147,7 @@ test('messageHandler with non-command message', t => {
 })
 
 test('readyHandler', t => {
-  handlers.readyHandler(logger)
+  readyHandler(logger)
   t.true(
     infoLogger.called,
     'logs a standard message'
