@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "discord-dj",
-      "script": "./lib/index.js",
+      "script": "./dist/index.js",
       "merge_logs": true,
       "max_restarts": 20,
       "instances": 4,
