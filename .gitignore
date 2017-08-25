@@ -1,6 +1,8 @@
 .DS_Store
 .nyc_output
+config/config.json
 coverage
 dist/*
+log/[^\.]*
 node_modules
 tags*
