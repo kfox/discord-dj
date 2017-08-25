@@ -5,7 +5,7 @@ import winston from 'winston'
 import QuitCommand from '../../lib/commands/quit'
 import { uniqueIdentifier } from '../../lib/user'
 
-import message from '../fixtures/message'
+import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
@@ -16,7 +16,7 @@ test.beforeEach(t => {
 
   args = {
     logger: logger,
-    message: message
+    message: MessageFixture
   }
 })
 
@@ -47,7 +47,7 @@ test.serial('exec', async t => {
     'calls process.exit'
   )
   t.true(
-    loggerInfo.calledWith(`'${uniqueIdentifier(message.author)}' told me to quit`),
+    loggerInfo.calledWith(`'${uniqueIdentifier(MessageFixture.author)}' told me to quit`),
     'logs an appropriate message'
   )
   t.true(

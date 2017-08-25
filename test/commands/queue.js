@@ -6,7 +6,7 @@ import { queue as q } from '../../lib/queue'
 import { formatDuration } from '../../lib/utils'
 import QueueCommand from '../../lib/commands/queue'
 
-import message from '../fixtures/message'
+import MessageFixture from '../fixtures/message'
 import SongFixtures from '../fixtures/songs'
 
 const logger = new (winston.Logger)({ level: 'silent' })
@@ -16,7 +16,7 @@ let args
 test.beforeEach(t => {
   args = {
     logger: logger,
-    message: message
+    message: MessageFixture
   }
 
   q.clear()

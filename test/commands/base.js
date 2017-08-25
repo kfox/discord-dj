@@ -4,7 +4,7 @@ import winston from 'winston'
 
 import { BaseCommand } from '../../lib/commands/base'
 
-import message from '../fixtures/message'
+import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
@@ -14,7 +14,7 @@ test.beforeEach(t => {
   args = {
     content: 'The dolphin is in the jacuzzi',
     logger: logger,
-    message: message,
+    message: MessageFixture,
     options: { foo: 'bar' }
   }
 })
@@ -24,7 +24,7 @@ test.afterEach.always(t => {
 })
 
 test.serial('reply calls message.reply', async t => {
-  const messageReply = sandbox.stub(message, 'reply')
+  const messageReply = sandbox.stub(MessageFixture, 'reply')
 
   await BaseCommand.reply(args)
 
@@ -35,7 +35,7 @@ test.serial('reply calls message.reply', async t => {
 })
 
 test.serial('reply handles errors', async t => {
-  const messageReply = sandbox.stub(message, 'reply').throws()
+  const messageReply = sandbox.stub(MessageFixture, 'reply').throws()
   const loggerError = sandbox.stub(logger, 'error')
 
   await BaseCommand.reply(args)
@@ -49,7 +49,7 @@ test.serial('reply handles errors', async t => {
 })
 
 test.serial('reply logs response', async t => {
-  const initiator = `${message.author.username}#${message.author.discriminator}`
+  const initiator = `${MessageFixture.author.username}#${MessageFixture.author.discriminator}`
   const loggerError = sandbox.stub(logger, 'error')
   const loggerInfo = sandbox.stub(logger, 'info')
 

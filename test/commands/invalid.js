@@ -5,7 +5,7 @@ import winston from 'winston'
 import InvalidCommand from '../../lib/commands/invalid'
 import HelpCommand from '../../lib/commands/help'
 
-import message from '../fixtures/message'
+import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
@@ -14,7 +14,7 @@ let args
 test.beforeEach(t => {
   args = {
     logger: logger,
-    message: message
+    message: MessageFixture
   }
 })
 
