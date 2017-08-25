@@ -1,5 +1,6 @@
 import fs from 'fs'
-import { homedir } from 'os'
+import { cwd } from 'process'
+import { resolve } from 'path'
 
 import test from 'ava'
 import sinon from 'sinon'
@@ -8,7 +9,9 @@ import { config } from '../lib/config'
 import { defaults } from '../lib/defaults'
 
 const sandbox = sinon.sandbox.create()
-const configFileName = `${homedir()}/.config/discord-dj/config.json`
+const configFileName = resolve(
+  cwd(), 'config', 'config.json'
+)
 const TOKEN = 'abcd1234'
 const BASE_CONFIG = defaults.config
 
@@ -95,16 +98,20 @@ test('config.load', t => {
 })
 
 test('config.load with config missing', t => {
-  sandbox.stub(fs, 'accessSync').callsFake(path => {
-    throw new Error()
-  })
+  const save = sandbox.stub(config, 'save')
+  sandbox.stub(fs, 'accessSync').throws()
 
-  const error = t.throws(
-    () => { config.load() },
-    Error
+  config.load()
+
+  t.true(
+    save.called,
+    'new config file written'
   )
-
-  t.is(error.message, 'config file missing')
+  t.deepEqual(
+    config.get(),
+    BASE_CONFIG,
+    'config is loaded correctly'
+  )
 })
 
 test('config.save', t => {
