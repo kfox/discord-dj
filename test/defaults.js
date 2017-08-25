@@ -3,13 +3,13 @@ import test from 'ava'
 import { defaults } from '../lib/defaults'
 
 const DEFAULTS = {
-  loggingOptions: {
+  logging: {
     level: 'info'
   },
   maxQueueSize: 250,
   prefix: '!',
   token: '',
-  clientOptions: {
+  client: {
     messageCacheLifetime: 30,
     messageSweepInterval: 10,
     disabledEvents: [
