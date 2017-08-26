@@ -13,8 +13,8 @@
     "repl": "babel-node",
     "serve": "node dist/index.js",
     "start": "nodemon lib/index.js --exec babel-node",
-    "test": "nyc ava && nyc report --reporter=text-lcov | coveralls",
-    "watch": "ava --watch --verbose"
+    "test": "NODE_ENV=test nyc ava && nyc report --reporter=text-lcov | coveralls",
+    "watch": "NODE_ENV=test ava --watch --verbose"
   },
   "author": "Kelly Fox <kelly@bumfuddled.com>",
   "keywords": [
@@ -98,7 +98,6 @@
     "exclude": [
       "coverage",
       "dist",
-      "lib/index.js",
       "node_modules",
       "test"
     ],
