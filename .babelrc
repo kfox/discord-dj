@@ -9,6 +9,12 @@
         "istanbul",
         "transform-runtime"
       ]
+    },
+    "test": {
+      "plugins": [
+        "istanbul",
+        "transform-runtime"
+      ]
     }
   }
 }
