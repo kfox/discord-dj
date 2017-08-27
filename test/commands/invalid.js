@@ -9,10 +9,10 @@ import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args
+let options
 
 test.beforeEach(t => {
-  args = {
+  options = {
     logger: logger,
     message: MessageFixture
   }
@@ -33,14 +33,14 @@ test.serial('exec', async t => {
   const invalidCommandReply = sandbox.stub(InvalidCommand, 'reply')
   const helpCommandExec = sandbox.stub(HelpCommand, 'exec')
 
-  await InvalidCommand.exec(args)
+  await InvalidCommand.exec(options)
 
   t.true(
     invalidCommandReply.calledWithMatch({ content: 'Invalid command.' }),
     'calls message.reply with correct arguments'
   )
   t.true(
-    helpCommandExec.calledWith(args),
+    helpCommandExec.calledWithMatch(options),
     'calls help.exec with correct arguments'
   )
 })

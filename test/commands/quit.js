@@ -9,12 +9,12 @@ import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args, processExit
+let options, processExit
 
 test.beforeEach(t => {
   processExit = sandbox.stub(process, 'exit')
 
-  args = {
+  options = {
     logger: logger,
     message: MessageFixture
   }
@@ -40,14 +40,14 @@ test.serial('exec', async t => {
   const loggerInfo = sandbox.stub(logger, 'info')
   const quitCommandReply = sandbox.stub(QuitCommand, 'reply')
 
-  await QuitCommand.exec(args)
+  await QuitCommand.exec(options)
 
   t.true(
     processExit.called,
     'calls process.exit'
   )
   t.true(
-    loggerInfo.calledWith(`'${uniqueIdentifier(MessageFixture.author)}' told me to quit`),
+    loggerInfo.calledWithMatch(`'${uniqueIdentifier(MessageFixture.author)}' told me to quit`),
     'logs an appropriate message'
   )
   t.true(
@@ -60,7 +60,7 @@ test.serial('exec with error', async t => {
   const loggerError = sandbox.stub(logger, 'error')
   const quitCommandReply = sandbox.stub(QuitCommand, 'reply').throws()
 
-  await QuitCommand.exec(args)
+  await QuitCommand.exec(options)
 
   t.true(
     processExit.called,

@@ -66,7 +66,7 @@ test('exec', t => {
   )
 
   t.true(
-    pingCommandExec.calledWith({
+    pingCommandExec.calledWithMatch({
       commandArgs: '',
       logger: logger,
       message: message
@@ -82,7 +82,7 @@ test('exec with arguments', t => {
   command.exec(logger, message)
 
   t.true(
-    pingCommandExec.calledWith({
+    pingCommandExec.calledWithMatch({
       commandArgs: 'me baby',
       logger: logger,
       message: message

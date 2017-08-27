@@ -7,9 +7,9 @@ class RegularCommand extends BaseCommand {
     this.description = 'a regular command'
   }
 
-  exec (args) {
-    args.content = 'boink'
-    return this.reply(args)
+  exec (options) {
+    options.content = 'boink'
+    return this.reply(options)
   }
 }
 

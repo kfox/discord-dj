@@ -8,14 +8,14 @@ import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args
+let options
 
 test.beforeEach(t => {
-  args = {
+  options = {
     content: 'The dolphin is in the jacuzzi',
     logger: logger,
     message: MessageFixture,
-    options: { foo: 'bar' }
+    replyOptions: { foo: 'bar' }
   }
 })
 
@@ -26,10 +26,10 @@ test.afterEach.always(t => {
 test.serial('reply calls message.reply', async t => {
   const messageReply = sandbox.stub(MessageFixture, 'reply')
 
-  await BaseCommand.reply(args)
+  await BaseCommand.reply(options)
 
   t.true(
-    messageReply.calledWith(args.content, args.options),
+    messageReply.calledWithMatch(options.content, options.replyOptions),
     'with correct arguments'
   )
 })
@@ -38,7 +38,7 @@ test.serial('reply handles errors', async t => {
   const messageReply = sandbox.stub(MessageFixture, 'reply').throws()
   const loggerError = sandbox.stub(logger, 'error')
 
-  await BaseCommand.reply(args)
+  await BaseCommand.reply(options)
 
   t.true(
     messageReply.threw()
@@ -53,10 +53,10 @@ test.serial('reply logs response', async t => {
   const loggerError = sandbox.stub(logger, 'error')
   const loggerInfo = sandbox.stub(logger, 'info')
 
-  await BaseCommand.reply(args)
+  await BaseCommand.reply(options)
 
   t.true(
-    loggerInfo.calledWith(`Replied to '${initiator}' with '${args.content}'`)
+    loggerInfo.calledWithMatch(`Replied to '${initiator}' with '${options.content}'`)
   )
   t.true(
     loggerError.notCalled

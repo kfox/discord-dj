@@ -7,9 +7,9 @@ class HiddenCommand extends BaseCommand {
     this.description = 'a hidden command'
   }
 
-  exec (args) {
-    args.content = 'waka waka waka'
-    return this.reply(args)
+  exec (options) {
+    options.content = 'waka waka waka'
+    return this.reply(options)
   }
 }
 

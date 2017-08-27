@@ -34,7 +34,7 @@ test('errorHandler', t => {
   handlers.errorHandler(logger, 'foo')
 
   t.true(
-    errorLogger.calledWith('foo'),
+    errorLogger.calledWithMatch('foo'),
     'logs an error message'
   )
 })
@@ -97,7 +97,7 @@ test('exitHandler with error', t => {
   handlers.exitHandler(logger, options, err)
 
   t.true(
-    errorLogger.calledWith(err.stack),
+    errorLogger.calledWithMatch(err.stack),
     'error stack was dumped'
   )
 })

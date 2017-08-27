@@ -11,10 +11,10 @@ import SongFixtures from '../fixtures/songs'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args
+let options
 
 test.beforeEach(t => {
-  args = {
+  options = {
     logger: logger,
     message: MessageFixture
   }
@@ -46,7 +46,7 @@ test('init', t => {
 test('exec with no queue', t => {
   const queueCommandReply = sandbox.stub(QueueCommand, 'reply')
 
-  QueueCommand.exec(args)
+  QueueCommand.exec(options)
 
   t.true(
     queueCommandReply.calledWithMatch({ content: 'No songs queued.' }),
@@ -62,7 +62,7 @@ test('exec with queue', t => {
   })
 
   q.enqueue(songList)
-  QueueCommand.exec(args)
+  QueueCommand.exec(options)
 
   let expected = `${songList.length} songs queued:\n`
 

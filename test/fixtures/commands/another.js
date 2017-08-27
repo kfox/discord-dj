@@ -6,9 +6,9 @@ class AnotherCommand extends BaseCommand {
     this.description = 'another command'
   }
 
-  exec (args) {
-    args.content = 'sproing'
-    return this.reply(args)
+  exec (options) {
+    options.content = 'sproing'
+    return this.reply(options)
   }
 }
 

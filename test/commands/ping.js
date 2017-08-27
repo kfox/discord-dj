@@ -8,10 +8,10 @@ import MessageFixture from '../fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args
+let options
 
 test.beforeEach(t => {
-  args = {
+  options = {
     logger: logger,
     message: MessageFixture
   }
@@ -36,7 +36,7 @@ test('init', t => {
 test('exec', t => {
   const pingCommandReply = sandbox.stub(PingCommand, 'reply')
 
-  PingCommand.exec(args)
+  PingCommand.exec(options)
 
   t.true(
     pingCommandReply.calledWithMatch({ content: 'pong' }),
