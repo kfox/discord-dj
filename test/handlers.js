@@ -10,12 +10,15 @@ import MessageFixture from './fixtures/message'
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
 
-let message, options, errorLogger, infoLogger, processExit, commandExec
+let flags, options, errorLogger, infoLogger, processExit, commandExec
 
 test.beforeEach(t => {
-  message = MessageFixture
-
   options = {
+    logger: logger,
+    message: MessageFixture
+  }
+
+  flags = {
     cleanup: false,
     exit: false
   }
@@ -31,7 +34,7 @@ test.afterEach.always(t => {
 })
 
 test('errorHandler', t => {
-  handlers.errorHandler(logger, 'foo')
+  handlers.errorHandler(options, 'foo')
 
   t.true(
     errorLogger.calledWithMatch('foo'),
@@ -40,7 +43,7 @@ test('errorHandler', t => {
 })
 
 test('exitHandler with no options', t => {
-  handlers.exitHandler(logger)
+  handlers.exitHandler(options)
 
   t.true(
     infoLogger.notCalled,
@@ -56,9 +59,9 @@ test('exitHandler with no options', t => {
   )
 })
 
-test('exitHandler with options.cleanup', t => {
-  options.cleanup = true
-  handlers.exitHandler(logger, options)
+test('exitHandler with cleanup flag', t => {
+  flags.cleanup = true
+  handlers.exitHandler(options, flags)
 
   t.true(
     infoLogger.called,
@@ -74,9 +77,9 @@ test('exitHandler with options.cleanup', t => {
   )
 })
 
-test('exitHandler with options.exit', t => {
-  options.exit = true
-  handlers.exitHandler(logger, options)
+test('exitHandler with exit flag', t => {
+  flags.exit = true
+  handlers.exitHandler(options, flags)
 
   t.true(
     infoLogger.notCalled,
@@ -94,7 +97,7 @@ test('exitHandler with options.exit', t => {
 
 test('exitHandler with error', t => {
   const err = new Error()
-  handlers.exitHandler(logger, options, err)
+  handlers.exitHandler(options, flags, err)
 
   t.true(
     errorLogger.calledWithMatch(err.stack),
@@ -103,7 +106,7 @@ test('exitHandler with error', t => {
 })
 
 test('messageHandler', t => {
-  handlers.messageHandler(logger, message)
+  handlers.messageHandler(options)
   t.true(
     commandExec.called,
     'commandExec was called'
@@ -111,8 +114,8 @@ test('messageHandler', t => {
 })
 
 test('messageHandler with system message', t => {
-  message.system = true
-  handlers.messageHandler(logger, message)
+  options.message.system = true
+  handlers.messageHandler(options)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -120,8 +123,8 @@ test('messageHandler with system message', t => {
 })
 
 test('messageHandler with bot message', t => {
-  message.author.bot = true
-  handlers.messageHandler(logger, message)
+  options.message.author.bot = true
+  handlers.messageHandler(options)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -129,8 +132,8 @@ test('messageHandler with bot message', t => {
 })
 
 test('messageHandler with non-guild message', t => {
-  message.guild = false
-  handlers.messageHandler(logger, message)
+  options.message.guild = false
+  handlers.messageHandler(options)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -138,8 +141,8 @@ test('messageHandler with non-guild message', t => {
 })
 
 test('messageHandler with non-command message', t => {
-  message.content = '?ping'
-  handlers.messageHandler(logger, message)
+  options.message.content = '?ping'
+  handlers.messageHandler(options)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -147,7 +150,7 @@ test('messageHandler with non-command message', t => {
 })
 
 test('readyHandler', t => {
-  handlers.readyHandler(logger)
+  handlers.readyHandler(options)
   t.true(
     infoLogger.called,
     'logs a standard message'

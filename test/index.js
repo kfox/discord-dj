@@ -7,21 +7,27 @@ import winston from 'winston'
 import Discord from 'discord.js'
 
 import config from '../lib/config'
+import defaults from '../lib/defaults'
 import handlers from '../lib/handlers'
 
 import MessageFixture from './fixtures/message'
 
 import main from '../lib/index'
 
-const sandbox = sinon.sandbox.create()
 const client = new Discord.Client()
 const logger = new (winston.Logger)({ level: 'silent' })
+const sandbox = sinon.sandbox.create()
+const BASE_CONFIG = defaults.config
+BASE_CONFIG.token = 'abcd1234'
 
 let clientLogin, loggerInfo, options
 let errorHandler, exitHandler, messageHandler, readyHandler
 
 const loadFakeConfig = () => {
-  sandbox.stub(fs, 'accessSync').throws()
+  sandbox.stub(fs, 'accessSync')
+  sandbox.stub(fs, 'readFileSync').callsFake((file, options) => {
+    return JSON.stringify(BASE_CONFIG)
+  })
   config.load()
 }
 
@@ -30,8 +36,7 @@ test.beforeEach(t => {
 
   options = {
     client: client,
-    logger: logger,
-    token: 'abcd1234'
+    logger: logger
   }
 
   clientLogin = sandbox.stub(client, 'login')
@@ -54,7 +59,7 @@ test('main', t => {
     'logs a startup message'
   )
   t.true(
-    clientLogin.calledWithMatch(options.token),
+    clientLogin.calledWithMatch(BASE_CONFIG.token),
     'attempts to log in with the token'
   )
 })
@@ -65,7 +70,7 @@ test.serial('on client ready', async t => {
   await client.emit('ready')
 
   t.true(
-    readyHandler.calledWith(options.logger),
+    readyHandler.calledWith(options),
     'ready handler called correctly'
   )
 })
@@ -76,7 +81,7 @@ test.serial('on client message', async t => {
   await client.emit('message', MessageFixture)
 
   t.true(
-    messageHandler.calledWith(options.logger, sinon.match(MessageFixture)),
+    messageHandler.calledWith(options, sinon.match(MessageFixture)),
     'message handler called correctly'
   )
 })
@@ -89,7 +94,7 @@ test.serial('on client error', async t => {
   await client.emit('error', err)
 
   t.true(
-    errorHandler.calledWith(options.logger, sinon.match(err)),
+    errorHandler.calledWith(options, sinon.match(err)),
     'error handler called correctly'
   )
 })

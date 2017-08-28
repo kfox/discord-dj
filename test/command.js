@@ -13,10 +13,13 @@ import MessageFixture from './fixtures/message'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let message
+let options
 
 test.beforeEach(t => {
-  message = MessageFixture
+  options = {
+    logger: logger,
+    message: MessageFixture
+  }
 })
 
 test.afterEach.always(t => {
@@ -58,7 +61,7 @@ test('resolve with invalid command name', t => {
 test('exec', t => {
   const pingCommandExec = sandbox.stub(PingCommand, 'exec')
 
-  command.exec(logger, message)
+  command.exec(options)
 
   t.true(
     pingCommandExec.called,
@@ -69,7 +72,7 @@ test('exec', t => {
     pingCommandExec.calledWithMatch({
       commandArgs: '',
       logger: logger,
-      message: message
+      message: MessageFixture
     }),
     'PingCommand.exec was called with the correct arguments'
   )
@@ -78,14 +81,14 @@ test('exec', t => {
 test('exec with arguments', t => {
   const pingCommandExec = sandbox.stub(PingCommand, 'exec')
 
-  message.content = config.get('prefix') + 'ping me baby'
-  command.exec(logger, message)
+  options.message.content = config.get('prefix') + 'ping me baby'
+  command.exec(options)
 
   t.true(
     pingCommandExec.calledWithMatch({
       commandArgs: 'me baby',
       logger: logger,
-      message: message
+      message: MessageFixture
     }),
     'PingCommand.exec was called with the correct arguments'
   )

@@ -11,7 +11,7 @@ import CommandFixtures from '../fixtures/commands'
 
 const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
-let args
+let options
 
 const columnOptions = {
   columnSplitter: ' | ',
@@ -29,7 +29,7 @@ const columnOptions = {
 }
 
 test.beforeEach(t => {
-  args = {
+  options = {
     logger: logger,
     message: MessageFixture
   }
@@ -54,10 +54,10 @@ test('init', t => {
 test('exec', t => {
   const helpCommandReply = sandbox.stub(HelpCommand, 'reply')
 
-  HelpCommand.exec(args)
+  HelpCommand.exec(options)
 
   t.true(
-    helpCommandReply.calledWithMatch(args),
+    helpCommandReply.calledWithMatch(options),
     'calls message.reply with correct arguments'
   )
 })
@@ -70,7 +70,7 @@ test('output', t => {
     return a.commandName.localeCompare(b.commandName)
   })
 
-  HelpCommand.exec(args)
+  HelpCommand.exec(options)
 
   t.true(
     helpCommandReply.calledWithMatch({
