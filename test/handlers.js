@@ -14,8 +14,7 @@ let flags, options, errorLogger, infoLogger, processExit, commandExec
 
 test.beforeEach(t => {
   options = {
-    logger: logger,
-    message: MessageFixture
+    logger: logger
   }
 
   flags = {
@@ -106,7 +105,7 @@ test('exitHandler with error', t => {
 })
 
 test('messageHandler', t => {
-  handlers.messageHandler(options)
+  handlers.messageHandler(options, MessageFixture)
   t.true(
     commandExec.called,
     'commandExec was called'
@@ -114,8 +113,8 @@ test('messageHandler', t => {
 })
 
 test('messageHandler with system message', t => {
-  options.message.system = true
-  handlers.messageHandler(options)
+  MessageFixture.system = true
+  handlers.messageHandler(options, MessageFixture)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -123,8 +122,8 @@ test('messageHandler with system message', t => {
 })
 
 test('messageHandler with bot message', t => {
-  options.message.author.bot = true
-  handlers.messageHandler(options)
+  MessageFixture.author.bot = true
+  handlers.messageHandler(options, MessageFixture)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -132,8 +131,8 @@ test('messageHandler with bot message', t => {
 })
 
 test('messageHandler with non-guild message', t => {
-  options.message.guild = false
-  handlers.messageHandler(options)
+  MessageFixture.guild = false
+  handlers.messageHandler(options, MessageFixture)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
@@ -141,8 +140,8 @@ test('messageHandler with non-guild message', t => {
 })
 
 test('messageHandler with non-command message', t => {
-  options.message.content = '?ping'
-  handlers.messageHandler(options)
+  MessageFixture.content = '?ping'
+  handlers.messageHandler(options, MessageFixture)
   t.true(
     commandExec.notCalled,
     'commandExec was not called'
