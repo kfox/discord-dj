@@ -9,5 +9,12 @@ export default {
   content: config.get('prefix') + 'ping',
   guild: true,
   reply: async (content, options) => {},
-  system: false
+  system: false,
+  member: {
+    voiceChannel: {
+      id: '304667045398708224',
+      name: 'Gaming',
+      type: 'voice'
+    }
+  }
 }
