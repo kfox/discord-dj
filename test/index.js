@@ -3,10 +3,10 @@ import fs from 'fs'
 import test from 'ava'
 import sinon from 'sinon'
 
-import winston from 'winston'
 import Discord from 'discord.js'
 
 import config from '../lib/config'
+import logger from '../lib/logger'
 import defaults from '../lib/defaults'
 import handlers from '../lib/handlers'
 
@@ -15,12 +15,11 @@ import MessageFixture from './fixtures/message'
 import main from '../lib/index'
 
 const client = new Discord.Client()
-const logger = new (winston.Logger)({ level: 'silent' })
 const sandbox = sinon.sandbox.create()
 const BASE_CONFIG = defaults.config
 BASE_CONFIG.token = 'abcd1234'
 
-let clientLogin, loggerInfo, options
+let clientLogin, options
 let errorHandler, exitHandler, messageHandler, readyHandler
 
 const loadFakeConfig = () => {
@@ -34,17 +33,16 @@ const loadFakeConfig = () => {
 test.beforeEach(t => {
   loadFakeConfig()
 
-  options = {
-    client: client,
-    logger: logger
-  }
-
   clientLogin = sandbox.stub(client, 'login')
-  loggerInfo = sandbox.stub(logger, 'info')
   errorHandler = sandbox.stub(handlers, 'errorHandler')
   exitHandler = sandbox.stub(handlers, 'exitHandler')
   messageHandler = sandbox.stub(handlers, 'messageHandler')
   readyHandler = sandbox.stub(handlers, 'readyHandler')
+
+  options = {
+    client: client,
+    logger: logger
+  }
 })
 
 test.afterEach.always(t => {
@@ -54,10 +52,6 @@ test.afterEach.always(t => {
 test('main', t => {
   main(options)
 
-  t.true(
-    loggerInfo.calledWith('Discord-DJ starting'),
-    'logs a startup message'
-  )
   t.true(
     clientLogin.calledWithMatch(BASE_CONFIG.token),
     'attempts to log in with the token'
