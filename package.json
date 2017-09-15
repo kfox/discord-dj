@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel lib -d dist",
-    "check": "ncu",
+    "depcheck": "ncu",
+    "depupdate": "ncu -ua && npm update",
     "coverage": "nyc report -r=html && open coverage/index.html",
     "debug": "node --inspect bin/acclimate.js",
     "lint": "standard -v | snazzy",
@@ -44,7 +45,7 @@
   "devDependencies": {
     "ava": "^0.22.0",
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.0",
     "babel-plugin-istanbul": "^4.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
@@ -52,7 +53,7 @@
     "eslint": "^4.6.1",
     "eslint-plugin-ava": "^4.2.2",
     "eslint-plugin-babel": "^4.1.2",
-    "nodemon": "^1.12.0",
+    "nodemon": "^1.12.1",
     "nyc": "^11.2.1",
     "sinon": "^3.2.1",
     "snazzy": "^7.0.0",
